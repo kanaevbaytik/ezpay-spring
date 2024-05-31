@@ -29,12 +29,13 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    public LoginResponse signUp(@RequestBody UserSignInDtoRequest request) {
-        String token = authService.signIn(request);
+    public LoginResponse signUp(@RequestBody UserSignUpDtoRequest request) {
+        String token = authService.signUp(request);
         return LoginResponse.builder()
                 .token(token)
                 .build();
     }
+
     @PostMapping("/resetPassword")
     public RequestEntity<String> resetPassword(){
         return null;
