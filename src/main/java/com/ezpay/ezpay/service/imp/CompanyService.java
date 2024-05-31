@@ -2,6 +2,7 @@ package com.ezpay.ezpay.service.imp;
 
 import com.ezpay.ezpay.domains.dto.request.CompanyDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.CompanyApiKeys;
+import com.ezpay.ezpay.domains.dto.response.CompanyDto;
 import com.ezpay.ezpay.domains.entity.Company;
 import com.ezpay.ezpay.domains.entity.User;
 import com.ezpay.ezpay.repository.CompanyRepository;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -75,7 +78,13 @@ public class CompanyService {
     }
 
 
-
-
-
+    public List<CompanyDto> getAllCompaniesByUser(User user) {
+        return companyRepository.getAllCompaniesByUser(user).stream().map(
+                company -> new CompanyDto(
+                        company.getId(), company.getEmail(), company.getCompanyName(), company.getBusinessType(),
+                        company.getTaxId(), company.getSupportPhone(), company.getCreateDate(), company.getPrice(),
+                        company.getAddressCompany(), company.getStatementDescription(), company.getCurrency().toString()
+                )
+        ).collect(Collectors.toList());
+    }
 }

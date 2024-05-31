@@ -2,6 +2,8 @@ package com.ezpay.ezpay.controller;
 
 import com.ezpay.ezpay.domains.dto.request.CompanyDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.CompanyApiKeys;
+import com.ezpay.ezpay.domains.dto.response.CompanyDto;
+import com.ezpay.ezpay.domains.entity.Company;
 import com.ezpay.ezpay.domains.entity.User;
 import com.ezpay.ezpay.service.imp.CompanyService;
 import lombok.AccessLevel;
@@ -14,13 +16,11 @@ import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpHeaders;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -36,5 +36,10 @@ public class CompanyController {
     ) {
         System.out.println(user);
         return companyService.createCompany(companyDtoRequest, user);
+    }
+
+    @GetMapping
+    public List<CompanyDto> getAllCompanies(@AuthenticationPrincipal User user) {
+        return companyService.getAllCompaniesByUser(user);
     }
 }
