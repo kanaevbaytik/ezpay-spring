@@ -29,8 +29,12 @@ import java.security.Principal;
 public class CompanyController {
     CompanyService companyService;
 
-    @PostMapping("/create")
-    public CompanyApiKeys createCompany(@RequestBody CompanyDtoRequest companyDtoRequest, @AuthenticationPrincipal User user){
+    @PostMapping
+    public CompanyApiKeys createCompany(
+            @RequestBody CompanyDtoRequest companyDtoRequest,
+            @AuthenticationPrincipal User user
+    ) {
+        System.out.println(user);
         return companyService.createCompany(companyDtoRequest, user);
     }
 }

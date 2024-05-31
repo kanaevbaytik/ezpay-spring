@@ -17,6 +17,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
@@ -29,7 +30,7 @@ public class Transaction {
     Currency currency;
     @Enumerated(value = EnumType.STRING)
     Status status;
-            @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-            Company company;
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    Company company;
 
 }

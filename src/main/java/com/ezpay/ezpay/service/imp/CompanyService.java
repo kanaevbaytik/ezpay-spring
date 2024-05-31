@@ -38,12 +38,13 @@ public class CompanyService {
                     .currency(companyDtoRequest.getCurrency())
                     .user(user)
                     .build();
-            companyRepository.save(company);
+            Company save = companyRepository.save(company);
+            System.out.println(save.toString());
             return CompanyApiKeys.builder()
                     .key("non")
                     .build();
         }catch (Exception e){
-            return null;
+            throw e;
         }
     }
     CompanyApiKeys chaneSettingsCompany(CompanyDtoRequest companyDtoRequest,String token){

@@ -32,7 +32,7 @@ public class Company {
     String statementDescription;
     @Enumerated(value = EnumType.STRING)
     Currency currency;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
     User user;
 
 }
