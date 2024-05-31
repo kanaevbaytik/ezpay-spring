@@ -58,7 +58,10 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/v3/api-docs/**");
+        return (web) -> web.ignoring().requestMatchers(
+//                "/v3/api-docs/**"
+        "/**"
+        );
     }
 
 

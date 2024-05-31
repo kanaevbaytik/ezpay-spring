@@ -5,6 +5,7 @@ import com.ezpay.ezpay.domains.dto.request.UserSignUpDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.LoginResponse;
 import com.ezpay.ezpay.domains.dto.response.SignInDtoResponse;
 import com.ezpay.ezpay.service.AuthService;
+import com.ezpay.ezpay.service.imp.UserAuthServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,14 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     AuthService<UserSignInDtoRequest, UserSignUpDtoRequest> authService;
-
-    @PostMapping("/signUp")
-    public RequestEntity<String> signUp(){
-        return null;
-    }
+    UserAuthServiceImpl userAuthService;
 
     @PostMapping("/signIn")
-    public LoginResponse signIn(@RequestBody UserSignInDtoRequest request) {
+    public LoginResponse signIn(@RequestBody UserSignInDtoRequest userSignInDtoRequest){
+        return LoginResponse.builder()
+                .token(userAuthService.signIn(userSignInDtoRequest))
+                .build();
+    }
+
+    @PostMapping("/signUp")
+    public LoginResponse signUp(@RequestBody UserSignInDtoRequest request) {
         String token = authService.signIn(request);
         return LoginResponse.builder()
                 .token(token)

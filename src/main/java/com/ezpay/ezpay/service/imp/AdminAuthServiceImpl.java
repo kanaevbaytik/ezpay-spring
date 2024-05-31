@@ -1,4 +1,6 @@
 package com.ezpay.ezpay.service.imp;
 
-public class AdminAuthServiceImpl {
+import com.ezpay.ezpay.service.AuthService;
+
+public class AdminAuthServiceImpl  {
 }

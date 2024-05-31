@@ -34,21 +34,19 @@ public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, Us
             throw new UserAlreadyExist(HttpStatus.CONFLICT, "User already exist:" + userRequest.getUsername());
         } else {
             User user = User.builder()
-                    .username(userRequest.getFirstName())
-                    .password(userRequest.getLastName())
+                    .username(userRequest.getUsername())
+                    .password(userRequest.getPassword())
                     .phone(userRequest.getPhone())
                     .isActive(false)
                     .createDate(LocalDateTime.now())
                     .build();
-            return "";
+            return jwtService.generateToken(user);
+              }
         }
-    }
     @Override
     public String signIn(UserSignInDtoRequest user) {
-
         User us = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("user not found!"));
-
         return jwtService.generateToken(us);
     }
 
