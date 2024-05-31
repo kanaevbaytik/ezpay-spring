@@ -4,12 +4,13 @@ import com.ezpay.ezpay.domains.dto.request.UserSignInDtoRequest;
 import com.ezpay.ezpay.domains.dto.request.UserSignUpDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.SignInDtoResponse;
 import com.ezpay.ezpay.domains.entity.User;
-import com.ezpay.ezpay.domains.enums.Status;
 import com.ezpay.ezpay.exception.UserAlreadyExist;
 import com.ezpay.ezpay.repository.UserRepository;
+import com.ezpay.ezpay.security.JwtService;
 import com.ezpay.ezpay.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,10 +19,12 @@ import java.util.Optional;
 @Service
 public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, UserSignUpDtoRequest> {
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Autowired
-    public UserAuthServiceImpl(UserRepository userRepository) {
+    public UserAuthServiceImpl(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, Us
                     .username(userRequest.getFirstName())
                     .password(userRequest.getLastName())
                     .phone(userRequest.getPhone())
-                    .isActive(Status.Active)
+                    .isActive(false)
                     .createDate(LocalDateTime.now())
                     .build();
             return "";
@@ -42,7 +45,11 @@ public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, Us
     }
     @Override
     public String signIn(UserSignInDtoRequest user) {
-        return "";
+
+        User us = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("user not found!"));
+
+        return jwtService.generateToken(us);
     }
 
     @Override
