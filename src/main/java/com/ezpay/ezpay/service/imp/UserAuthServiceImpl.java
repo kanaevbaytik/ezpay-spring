@@ -30,6 +30,7 @@ public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, Us
     @Override
     public String signUp(UserSignUpDtoRequest userRequest) {
         Optional<User> account = userRepository.findByUsername(userRequest.getUsername());
+        System.out.println("asdsadadasdasda"+account);
         if (account.isPresent()) {
             throw new UserAlreadyExist(HttpStatus.CONFLICT, "User already exist:" + userRequest.getUsername());
         } else {
@@ -40,6 +41,7 @@ public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, Us
                     .isActive(false)
                     .createDate(LocalDateTime.now())
                     .build();
+            System.out.println("users"+user);
             return jwtService.generateToken(user);
               }
         }
