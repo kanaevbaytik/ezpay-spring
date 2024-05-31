@@ -35,7 +35,7 @@ public class AuthController {
     public RequestEntity<String> resetPassword(){
         return null;
     }
-    @PostMapping("/resetPassword")
+    @PostMapping("/refreshToken")
     public RequestEntity<String> refreshToken(){
         return null;
     }

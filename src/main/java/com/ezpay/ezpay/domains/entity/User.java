@@ -2,10 +2,7 @@ package com.ezpay.ezpay.domains.entity;
 
 
 import com.ezpay.ezpay.domains.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
 import lombok.Builder;
@@ -26,6 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
