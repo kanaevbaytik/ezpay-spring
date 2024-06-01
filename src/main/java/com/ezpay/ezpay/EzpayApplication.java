@@ -9,11 +9,13 @@ import com.ezpay.ezpay.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@EnableAsync
 @SpringBootApplication
 public class EzpayApplication implements CommandLineRunner {
 	private final UserRepository userRepository;
