@@ -15,8 +15,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/company")
@@ -38,6 +40,21 @@ public class CompanyController {
     @PostMapping("/{company-id}/new-transaction")
     public TransactionDto createNewTransaction(@PathVariable("company-id") UUID companyId, @RequestBody TransactionDtoRequest request) {
         return transactionService.createTransaction(request, companyId);
+    }
+
+    @PostMapping("/getTotalAmountForCompany/{id}")
+    public BigDecimal getTotalAmountForCompany(@PathVariable UUID companyId) {
+        return transactionService.getTotalAmountForCompany(companyId);
+    }
+
+    @GetMapping("/getAllTransaction")
+    public List<Transaction> getAllForUser(@AuthenticationPrincipal User user) {
+        return transactionService.getAllForUser(user);
+    }
+
+    @GetMapping("/getTotalAmountForUser")
+    public BigDecimal getTotalAmountForUser(@AuthenticationPrincipal User user) {
+        return transactionService.getTotalAmountForUser(user);
     }
 
     @GetMapping

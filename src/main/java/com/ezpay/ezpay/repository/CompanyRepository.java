@@ -14,6 +14,9 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
     @Query("SELECT c FROM Company c WHERE c.user.username = :username")
     Company findUserByUsername(@Param("username") String username);
 
+    @Query("SELECT c FROM Company c WHERE c.user.id = :id")
+    Company findUserById(@Param("id") UUID id);
+
     void deleteByCompanyName(String companyName);
 
     @Query("SELECT c FROM Company c WHERE c.user = :user")

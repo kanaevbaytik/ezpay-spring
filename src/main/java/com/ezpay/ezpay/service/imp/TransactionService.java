@@ -4,6 +4,7 @@ import com.ezpay.ezpay.domains.dto.request.TransactionDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.TransactionDto;
 import com.ezpay.ezpay.domains.entity.Company;
 import com.ezpay.ezpay.domains.entity.Transaction;
+import com.ezpay.ezpay.domains.entity.User;
 import com.ezpay.ezpay.domains.enums.Operations;
 import com.ezpay.ezpay.domains.enums.Status;
 import com.ezpay.ezpay.repository.CompanyRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,29 +54,29 @@ public class TransactionService {
         );
     }
 
-    public void deleteById(UUID id) {
-        transactionRepository.deleteById(id);
+    public BigDecimal getTotalAmountForCompany(UUID companyId) {
+        return transactionRepository.getTotalAmountForCompany(companyId);
     }
-//    public void deleteByIdUser(String name,User user) {
-//        transactionRepository.deleteTransactionsByCompanyNameAndUserId(name, user.getId());
-//    }
-//    public BigDecimal getTotalAmountForCompany(UUID companyId) {
-//        return transactionRepository.getTotalAmountForCompany(companyId);
-//    }
-//
-//    public List<Transaction> findAllByCompanyAndStatus(UUID companyId, Status status) {
-//        return transactionRepository.findAllByCompanyAndStatus(companyId, status);
-//    }
-//    public List<Transaction> findTransactionsByClientUsername(String clientUsername) {
-//        return transactionRepository.findTransactionsByClientUsername(clientUsername);
-//    }
-//
-//    public List<Transaction> findTransactionsByCompanyAndClientUsername(UUID companyId, String clientUsername) {
-//        return transactionRepository.findTransactionsByCompanyAndClientUsername(companyId, clientUsername);
-//    }
-//
-//    public List<Transaction> findTransactionsByCurrencyAndAmountGreaterThan(String currency, BigDecimal amount) {
-//        return transactionRepository.findTransactionsByCurrencyAndAmountGreaterThan(currency, amount);
-//    }
+    public BigDecimal getTotalAmount() {
+        return transactionRepository.getTotalAmount();
+    }
+
+    public List<Transaction> getAllForUser(User user) {
+        List<Transaction> allTransactions = transactionRepository.findAll();
+        List<Transaction> userTransactions = allTransactions.stream()
+                .filter(transaction -> transaction.getCompany().getUser().equals(user))
+                .collect(Collectors.toList());
+        return userTransactions;
+    }
+    public BigDecimal getTotalAmountForUser(User user) {
+        List<Transaction> allTransactions = transactionRepository.findAll();
+        BigDecimal totalAmount = allTransactions.stream()
+                .filter(transaction -> transaction.getCompany().getUser().equals(user))
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return totalAmount;
+    }
+
+
 
 }

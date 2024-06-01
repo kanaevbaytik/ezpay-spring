@@ -6,11 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
-    @Query("SELECT t.company FROM Transaction t WHERE t.id = :transactionId")
-    Company findCompanyByTransactionId(@Param("transactionId") UUID transactionId);
+    @Query("SELECT SUM(t.amount) FROM Transaction t WHERE t.company.id = :companyId")
+    BigDecimal getTotalAmountForCompany(@Param("companyId") UUID companyId);
+    Transaction findByCompanyId(Company userById);
+    @Query("SELECT SUM(t.amount) FROM Transaction t")
+    BigDecimal getTotalAmount();
 }
+

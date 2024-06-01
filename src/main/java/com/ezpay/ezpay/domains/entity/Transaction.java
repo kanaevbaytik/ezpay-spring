@@ -33,7 +33,5 @@ public class Transaction {
     Status status;
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     Company company;
-    @ManyToOne
-    User user;
 
 }
