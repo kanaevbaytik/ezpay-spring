@@ -4,8 +4,10 @@ import com.ezpay.ezpay.domains.dto.request.CompanyDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.CompanyApiKeys;
 import com.ezpay.ezpay.domains.dto.response.CompanyDto;
 import com.ezpay.ezpay.domains.entity.Company;
+import com.ezpay.ezpay.domains.entity.Transaction;
 import com.ezpay.ezpay.domains.entity.User;
 import com.ezpay.ezpay.repository.CompanyRepository;
+import com.ezpay.ezpay.repository.TransactionRepository;
 import com.ezpay.ezpay.security.JwtService;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,10 +24,12 @@ import java.util.stream.Collectors;
 public class CompanyService {
     CompanyRepository companyRepository;
     JwtService jwtService;
+    TransactionRepository transactionRepository;
     @Autowired
-    public CompanyService(CompanyRepository companyRepository, JwtService jwtService) {
+    public CompanyService(CompanyRepository companyRepository, JwtService jwtService, TransactionRepository transactionRepository) {
         this.companyRepository = companyRepository;
         this.jwtService = jwtService;
+        this.transactionRepository = transactionRepository;
     }
     public CompanyApiKeys createCompany(CompanyDtoRequest companyDtoRequest, User user){
         try {
