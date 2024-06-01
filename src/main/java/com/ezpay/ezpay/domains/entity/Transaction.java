@@ -28,9 +28,12 @@ public class Transaction {
     String clientUsername;
     @Enumerated(value = EnumType.STRING)
     Currency currency;
+    String cardNumber;
     @Enumerated(value = EnumType.STRING)
     Status status;
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     Company company;
+    @ManyToOne
+    User user;
 
 }
