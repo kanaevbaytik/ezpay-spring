@@ -47,6 +47,7 @@ public class UserAuthServiceImpl implements AuthService<UserSignInDtoRequest, Us
         }
     @Override
     public String signIn(UserSignInDtoRequest user) {
+        System.out.println(user.getUsername());
         User us = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("user not found!"));
         return jwtService.generateToken(us);
