@@ -1,6 +1,7 @@
 package com.ezpay.ezpay.service.imp;
 
 import com.ezpay.ezpay.domains.dto.request.TransactionDtoRequest;
+import com.ezpay.ezpay.domains.dto.response.TransactionDto;
 import com.ezpay.ezpay.domains.entity.Company;
 import com.ezpay.ezpay.domains.entity.Transaction;
 import com.ezpay.ezpay.domains.enums.Operations;
@@ -34,17 +35,21 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public Transaction createTransaction(TransactionDtoRequest transaction, UUID companyId) {
+    public TransactionDto createTransaction(TransactionDtoRequest transaction, UUID companyId) {
         Company company = companyRepository.findById(companyId).orElseThrow();
-        return transactionRepository.save(Transaction.builder()
-                        .company(company)
-                        .amount(transaction.getAmount())
-                        .cardNumber(transaction.getCardNumber())
-                        .clientUsername(transaction.getClientUsername())
-                        .status(Status.OK)
-                        .currency(transaction.getCurrency())
-                        .operations(Operations.Payment)
+        Transaction savedTransaction = transactionRepository.save(Transaction.builder()
+                .company(company)
+                .amount(transaction.getAmount())
+                .cardNumber(transaction.getCardNumber())
+                .clientUsername(transaction.getClientUsername())
+                .status(Status.OK)
+                .currency(transaction.getCurrency())
+                .operations(Operations.Payment)
                 .build());
+        return new TransactionDto(
+                savedTransaction.getId(), savedTransaction.getOperations().toString(),
+                savedTransaction.getAmount(), savedTransaction.getClientUsername(), savedTransaction.getStatus().toString()
+        );
     }
 
     public void deleteById(UUID id) {

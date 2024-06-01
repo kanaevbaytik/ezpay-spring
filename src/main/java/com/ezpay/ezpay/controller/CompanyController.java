@@ -3,6 +3,7 @@ package com.ezpay.ezpay.controller;
 import com.ezpay.ezpay.domains.dto.request.CompanyDtoRequest;
 import com.ezpay.ezpay.domains.dto.request.TransactionDtoRequest;
 import com.ezpay.ezpay.domains.dto.response.CompanyApiKeys;
+import com.ezpay.ezpay.domains.dto.response.TransactionDto;
 import com.ezpay.ezpay.domains.entity.Transaction;
 import com.ezpay.ezpay.domains.dto.response.CompanyDto;
 import com.ezpay.ezpay.domains.entity.User;
@@ -34,8 +35,8 @@ public class CompanyController {
         return companyService.createCompany(companyDtoRequest, user);
     }
 
-    @PostMapping("/{company-id}")
-    public Transaction createNewTransaction(@PathVariable("company-id") UUID companyId, @RequestBody TransactionDtoRequest request) {
+    @PostMapping("/{company-id}/new-transaction")
+    public TransactionDto createNewTransaction(@PathVariable("company-id") UUID companyId, @RequestBody TransactionDtoRequest request) {
         return transactionService.createTransaction(request, companyId);
     }
 
